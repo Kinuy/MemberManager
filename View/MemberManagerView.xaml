@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"  FontSize="32" Text="Members"/>
-            <Button Grid.Column="1" Content="Add Member" FontSize="16"/>
+            <Button Grid.Column="1" Content="Add Member" FontSize="16" Command="{Binding AddMemberCommand}"/>
             
         </Grid>
             
@@ -30,8 +30,8 @@
                 <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
 
-            <components:MemberListing Grid.Column="0"/>
-            <components:MemberDetails Grid.Column="1" Margin="20 0 0 0"/>
+            <components:MemberListing Grid.Column="0" DataContext="{Binding MemberListingViewModel}"/>
+            <components:MemberDetails Grid.Column="1" Margin="20 0 0 0" DataContext="{Binding MemberDetailsViewModel}"/>
         </Grid>
     </Grid>
 </UserControl>
