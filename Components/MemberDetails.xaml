@@ -15,7 +15,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" FontSize="25" Text="Kinuy"/>
+                <TextBlock Grid.Row="0" FontSize="25" Text="{Binding Username}"/>
                 <Grid Grid.Row="1" Margin="0 20 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" SharedSizeGroup="Label"/>
@@ -23,7 +23,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Text="Name" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="Tobias Weber" Margin="20 0 0 0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Username}" Margin="20 0 0 0"/>
                 </Grid>
 
                 <Grid Grid.Row="2" Margin="0 20 0 0">
@@ -33,7 +33,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Text="Age" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="39" Margin="20 0 0 0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Age}" Margin="20 0 0 0"/>
                 </Grid>
             </Grid>
         </Border>
