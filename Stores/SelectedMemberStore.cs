@@ -9,6 +9,23 @@ namespace MemberManager.Stores;
 
 public class SelectedMemberStore
 {
+    private readonly MemberStore _memberStore;
+
+    public SelectedMemberStore(MemberStore memberStore)
+    {
+        _memberStore = memberStore;
+
+        _memberStore.MemberUpdated += MemberStore_MemberUpdated;
+    }
+
+    private void MemberStore_MemberUpdated(Member member)
+    {
+        if(member.Id == SelectedMember?.Id)
+        {
+            SelectedMember = member;
+        }
+    }
+
     private Member _selectedMember;
 
     public Member SelectedMember
