@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0"  FontSize="32" Text="Members"/>
+            <TextBlock Grid.Column="0"  Style="{StaticResource PageHeader}" Text="Members"/>
             <Button Grid.Column="1" Content="Add Member" FontSize="16" Command="{Binding AddMemberCommand}"/>
             
         </Grid>

@@ -9,8 +9,13 @@
         FontSize="14"
         Height="450" 
         Width="800">
-    
-    <Grid Margin="25 ">
-        <view:MemberManagerView/>
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <StackPanel Margin="25 ">
+            <!--<view:MemberManagerView/>-->
+            <view:AddMemberView/>
+            <view:EditMemberView/>
+
+        </StackPanel>
+    </ScrollViewer>
+
 </Window>

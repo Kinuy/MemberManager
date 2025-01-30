@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MemberManager.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Grid.IsSharedSizeScope="True">
+    <Grid>
         <Border 
             BorderBrush="{StaticResource BorderPrimary}" 
             BorderThickness="1" 
@@ -25,10 +25,13 @@
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
-                    <TextBlock Grid.Row="0" Text="Please select a member to se their details." TextWrapping="WrapWithOverflow"/>
+                    <TextBlock 
+                        Grid.Row="0" 
+                        Text="Please select a member to se their details." 
+                        TextWrapping="WrapWithOverflow"/>
                     
                 </Grid>
-                <Grid>
+                <Grid Grid.IsSharedSizeScope="True">
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="Visibility" Value="Collapsed"/>
