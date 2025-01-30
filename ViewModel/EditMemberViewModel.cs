@@ -1,17 +1,31 @@
-﻿using System;
+﻿using MemberManager.Commands;
+using MemberManager.Model;
+using MemberManager.Stores;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MemberManager.ViewModel;
 
-public class EditMemberViewModel
+public class EditMemberViewModel : ViewModelBase
 {
+
+    public Guid MemberId { get; }
     public MemberDetailsFormViewModel MemberDetailsFormViewModel { get; }
 
-    public EditMemberViewModel()
+    public EditMemberViewModel(Member member, MemberStore memberStore, ModalNavigationStore modalNavigationStore)
     {
-        MemberDetailsFormViewModel = new MemberDetailsFormViewModel();
+
+        MemberId = member.Id;
+        ICommand submitCommand = new EditMemberCommand(this,memberStore,modalNavigationStore);
+        ICommand cancelCommand = new CloseModalCommand(modalNavigationStore);
+        MemberDetailsFormViewModel = new MemberDetailsFormViewModel(submitCommand, cancelCommand)
+        {
+            Username = member.Username,
+            Age = member.Age
+        };
     }
 }

@@ -1,4 +1,5 @@
-﻿using MemberManager.Stores;
+﻿using MemberManager.Commands;
+using MemberManager.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,17 @@ namespace MemberManager.ViewModel;
 
 public class MemberManagerViewModel : ViewModelBase
 {
+
     public MemberListingViewModel MemberListingViewModel { get;}
 
     public MemberDetailsViewModel MemberDetailsViewModel { get;}
     public ICommand AddMemberCommand { get; }
 
-    public MemberManagerViewModel(SelectedMemberStore _selectedMemberStore)
+    public MemberManagerViewModel(MemberStore memberStore,SelectedMemberStore selectedMemberStore, ModalNavigationStore modalNavigationStore)
     {
-        MemberDetailsViewModel = new MemberDetailsViewModel(_selectedMemberStore);
-        MemberListingViewModel = new MemberListingViewModel(_selectedMemberStore);
+        MemberDetailsViewModel = new MemberDetailsViewModel(selectedMemberStore);
+        MemberListingViewModel = new MemberListingViewModel(memberStore,selectedMemberStore, modalNavigationStore);
+
+        AddMemberCommand = new OpenAddMemberCommand(memberStore, modalNavigationStore);
     }
 }

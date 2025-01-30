@@ -15,7 +15,7 @@
 
         <TextBlock Grid.Row="0"  Style="{StaticResource PageHeader}" Text="Add Member"/>
 
-        <components:MemberDetailsForm  Grid.Row="1" Margin="0 30 0 0" />
+        <components:MemberDetailsForm  Grid.Row="1" Margin="0 30 0 0" DataContext="{Binding MemberDetailsFormViewModel}"/>
 
     </Grid>
 </UserControl>

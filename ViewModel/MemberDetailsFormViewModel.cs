@@ -25,7 +25,9 @@ public class MemberDetailsFormViewModel : ViewModelBase
 	}
 
 	private string _age;
-	public string Age
+
+
+    public string Age
 	{
 		get
 		{
@@ -42,4 +44,13 @@ public class MemberDetailsFormViewModel : ViewModelBase
 
 	public ICommand SubmitCommand { get;}
 	public ICommand CancelCommand { get; }
+
+
+    public MemberDetailsFormViewModel(ICommand submitCommand, ICommand cancelCommand)
+    {
+        SubmitCommand = submitCommand;
+        CancelCommand = cancelCommand;
+    }
+
+
 }
