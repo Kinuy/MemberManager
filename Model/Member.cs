@@ -8,11 +8,13 @@ namespace MemberManager.Model;
 
 public class Member
 {
+    public Guid Id { get; }
     public string Username {  get;}
     public string Age { get;}
 
-    public Member(string username, string age)
+    public Member(Guid id,string username, string age)
     {
+        Id = id;
         Username = username;
         Age = age;
     }
