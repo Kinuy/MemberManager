@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MemberManager.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,14 +10,17 @@ namespace MemberManager.ViewModel;
 
 public class MemberListingItemViewModel : ViewModelBase
 {
-    public string Username { get; }
+    public Member Member { get; }
+
+    public string Username => Member.Username;
 
     public ICommand EditCommand { get; }
 
     public ICommand DeleteCommand { get; }
 
-    public MemberListingItemViewModel(string username)
+
+    public MemberListingItemViewModel(Member member)
     {
-        Username = username;
+        Member = member;
     }
 }

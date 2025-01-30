@@ -7,33 +7,64 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Grid.IsSharedSizeScope="True">
-        <Border BorderBrush="{StaticResource BorderPrimary}" BorderThickness="1" SnapsToDevicePixels="True" CornerRadius="5" Padding="20">
+        <Border 
+            BorderBrush="{StaticResource BorderPrimary}" 
+            BorderThickness="1" 
+            SnapsToDevicePixels="True" 
+            CornerRadius="5" 
+            Padding="20">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" FontSize="25" Text="{Binding Username}"/>
-                <Grid Grid.Row="1" Margin="0 20 0 0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" SharedSizeGroup="Label"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Text="Name" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Username}" Margin="20 0 0 0"/>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasSelectedMember}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <TextBlock Grid.Row="0" Text="Please select a member to se their details." TextWrapping="WrapWithOverflow"/>
+                    
                 </Grid>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasSelectedMember}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
 
-                <Grid Grid.Row="2" Margin="0 20 0 0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" SharedSizeGroup="Label"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" FontSize="25" Text="{Binding Username}"/>
+                    <Grid Grid.Row="1" Margin="0 20 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" SharedSizeGroup="Label"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="Age" FontWeight="Bold"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Age}" Margin="20 0 0 0"/>
+                        <TextBlock Grid.Column="0" Text="Name" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Username}" Margin="20 0 0 0"/>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Margin="0 20 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" SharedSizeGroup="Label"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Age" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Age}" Margin="20 0 0 0"/>
+                    </Grid>
                 </Grid>
             </Grid>
         </Border>
