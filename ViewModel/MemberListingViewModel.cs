@@ -47,8 +47,32 @@ public class MemberListingViewModel :ViewModelBase
 
         _memberStore.MemberAdded += MemberStore_MemberAdded;
         _memberStore.MemberUpdated += MemberStore_MemberUpdated;
+        _memberStore.MembersLoaded += MemberStore_MembersLoaded;
+        _memberStore.MemberDeleted += MemberStore_MemberDeleted;
 
     }
+
+    private void MemberStore_MemberDeleted(Guid id)
+    {
+        MemberListingItemViewModel? itemViewModel = _memberListingItemViewModels.FirstOrDefault(y=>y.Member?.Id == id);
+
+        if (itemViewModel != null)
+        {
+            _memberListingItemViewModels.Remove(itemViewModel); 
+        }
+    }
+
+    private void MemberStore_MembersLoaded()
+    {
+        _memberListingItemViewModels.Clear();
+
+        foreach(Member member in _memberStore.Members) 
+        {
+            AddMember(member);
+        }
+    }
+
+
 
     private void MemberStore_MemberUpdated(Member member)
     {
@@ -64,6 +88,8 @@ public class MemberListingViewModel :ViewModelBase
     {
         _memberStore.MemberAdded -= MemberStore_MemberAdded;
         _memberStore.MemberUpdated -= MemberStore_MemberUpdated;
+        _memberStore.MembersLoaded -= MemberStore_MembersLoaded;
+        _memberStore.MemberDeleted -= MemberStore_MemberDeleted;
 
         base.Dispose();
     }

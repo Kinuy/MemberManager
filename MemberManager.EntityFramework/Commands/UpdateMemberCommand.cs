@@ -20,8 +20,10 @@ public class UpdateMemberCommand :IUpdateMemberCommand
 
     public async Task Excecute(Member member)
     {
+
         using (MembersDbContext context = _contextFactory.Create())
         {
+
             MemberDto memberDto = new MemberDto()
             {
                 Id = member.Id,

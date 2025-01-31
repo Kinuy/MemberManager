@@ -10,17 +10,23 @@
 
   <ItemGroup>
     <Compile Remove="MemberManager.Domain\**" />
+    <Compile Remove="MemberManager.EntityFramework\**" />
     <Compile Remove="Members.Domain\**" />
     <EmbeddedResource Remove="MemberManager.Domain\**" />
+    <EmbeddedResource Remove="MemberManager.EntityFramework\**" />
     <EmbeddedResource Remove="Members.Domain\**" />
     <None Remove="MemberManager.Domain\**" />
+    <None Remove="MemberManager.EntityFramework\**" />
     <None Remove="Members.Domain\**" />
     <Page Remove="MemberManager.Domain\**" />
+    <Page Remove="MemberManager.EntityFramework\**" />
     <Page Remove="Members.Domain\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DropdownMenu.WPF" Version="1.0.0" />
+    <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
   </ItemGroup>
 

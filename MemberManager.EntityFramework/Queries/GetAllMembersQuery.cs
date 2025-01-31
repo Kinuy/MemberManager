@@ -21,8 +21,9 @@ public class GetAllMembersQuery : IGetAllMembersQuery
 
     public async Task<IEnumerable<Member>> Excecute()
     {
-        using(MembersDbContext context  =  _contextFactory.Create())
+        using (MembersDbContext context  =  _contextFactory.Create())
         {
+
             IEnumerable<MemberDto> memberDtos = await context.Members.ToListAsync();
 
             return memberDtos.Select(y => new Member(y.Id, y.Username, y.Age));

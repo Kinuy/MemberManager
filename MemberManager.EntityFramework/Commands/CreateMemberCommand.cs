@@ -21,8 +21,11 @@ public class CreateMemberCommand :ICreateMemberCommand
 
     public async Task Excecute(Member member)
     {
+
+
         using (MembersDbContext context = _contextFactory.Create())
         {
+
             MemberDto memberDto = new MemberDto()
             {
                 Id = member.Id,

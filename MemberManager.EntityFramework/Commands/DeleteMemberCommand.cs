@@ -20,8 +20,10 @@ public class DeleteMemberCommand : IDeleteMemberCommand
 
     public async Task Excecute(Guid id)
     {
+
         using (MembersDbContext context = _contextFactory.Create())
         {
+
             MemberDto memberDto = new MemberDto()
             {
                 Id = id,

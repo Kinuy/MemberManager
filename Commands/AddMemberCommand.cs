@@ -23,9 +23,12 @@ public class AddMemberCommand : AsyncCommandBase
     }
     public override async Task ExecuteAsync(object? parameter)
     {
-        //ToDo: Add Member to DB
 
         MemberDetailsFormViewModel formViewModel =  _addMemberViewModel.MemberDetailsFormViewModel;
+
+        formViewModel.ErrorMessage = null;
+
+        formViewModel.IsSubmitting = true;
 
         Member member = new Member(
             Guid.NewGuid(),
@@ -40,7 +43,11 @@ public class AddMemberCommand : AsyncCommandBase
         }
         catch(Exception )
         {
-            throw;
+            formViewModel.ErrorMessage = "Failed to add member. Please try again later.";
+        }
+        finally
+        {
+            formViewModel.IsSubmitting = false;
         }
 
 
