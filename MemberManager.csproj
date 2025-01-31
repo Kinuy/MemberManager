@@ -9,8 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MemberManager.Domain\**" />
+    <Compile Remove="Members.Domain\**" />
+    <EmbeddedResource Remove="MemberManager.Domain\**" />
+    <EmbeddedResource Remove="Members.Domain\**" />
+    <None Remove="MemberManager.Domain\**" />
+    <None Remove="Members.Domain\**" />
+    <Page Remove="MemberManager.Domain\**" />
+    <Page Remove="Members.Domain\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DropdownMenu.WPF" Version="1.0.0" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="MemberManager.Domain\MemberManager.Domain.csproj" />
+    <ProjectReference Include="MemberManager.EntityFramework\MemberManager.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

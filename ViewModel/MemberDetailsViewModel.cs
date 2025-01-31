@@ -1,4 +1,4 @@
-﻿using MemberManager.Model;
+﻿using MemberManager.Domain.Models;
 using MemberManager.Stores;
 using System;
 using System.Collections.Generic;
