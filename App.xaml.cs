@@ -12,76 +12,72 @@ using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using MemberManager.HostBuilders;
 
-namespace MemberManager
+namespace MemberManager;
+
+public partial class App : Application
 {
-    public partial class App : Application
+
+    private readonly IHost _host;
+    public App()
     {
-
-        private readonly IHost _host;
-        public App()
-        {
-            _host = Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    string connectionString = context.Configuration.GetConnectionString("sqlite");
-
-                    services.AddSingleton<DbContextOptions>(new DbContextOptionsBuilder().UseSqlite(connectionString).Options);
-                    services.AddSingleton<MembersDbContextFactory>();
-
-                    services.AddSingleton<IGetAllMembersQuery, GetAllMembersQuery>();
-                    services.AddSingleton<ICreateMemberCommand, CreateMemberCommand>();
-                    services.AddSingleton<IUpdateMemberCommand, UpdateMemberCommand>();
-                    services.AddSingleton<IDeleteMemberCommand, DeleteMemberCommand>();
-
-                    services.AddSingleton<ModalNavigationStore>();
-                    services.AddSingleton<MemberStore>();
-                    services.AddSingleton<SelectedMemberStore>();
-
-                    services.AddTransient<MemberManagerViewModel>(CreateMemberManagerViewModel);
-                    services.AddSingleton<MainViewModel>();
-
-                    services.AddSingleton<MainWindow>((services) => new MainWindow()
-                    {
-                        DataContext = services.GetRequiredService<MainViewModel>()
-                    }) ;
-                })
-                .Build();
-        }
-
-
-
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            _host.Start();
-
-            MembersDbContextFactory membersDbContextFactory = _host.Services.GetRequiredService<MembersDbContextFactory>();
-            using (MembersDbContext context = membersDbContextFactory.Create())
+        _host = Host.CreateDefaultBuilder()
+            .AddDbContext()
+            .ConfigureServices((context, services) =>
             {
-                context.Database.Migrate();
-            }
 
+                services.AddSingleton<IGetAllMembersQuery, GetAllMembersQuery>();
+                services.AddSingleton<ICreateMemberCommand, CreateMemberCommand>();
+                services.AddSingleton<IUpdateMemberCommand, UpdateMemberCommand>();
+                services.AddSingleton<IDeleteMemberCommand, DeleteMemberCommand>();
 
-            MainWindow = _host.Services.GetRequiredService<MainWindow>();
-            MainWindow.Show();
-            base.OnStartup(e);
-        }
+                services.AddSingleton<ModalNavigationStore>();
+                services.AddSingleton<MemberStore>();
+                services.AddSingleton<SelectedMemberStore>();
 
-        protected override void OnExit(ExitEventArgs e)
-        {
-            _host.StopAsync();
-            _host.Dispose();
-            base.OnExit(e);
-        }
+                services.AddTransient<MemberManagerViewModel>(CreateMemberManagerViewModel);
+                services.AddSingleton<MainViewModel>();
 
-        private MemberManagerViewModel CreateMemberManagerViewModel(IServiceProvider services)
-        {
-            return MemberManagerViewModel.LoadViewModel(
-                services.GetRequiredService<MemberStore>(),
-                services.GetRequiredService<SelectedMemberStore>(),
-                services.GetRequiredService<ModalNavigationStore>()
-                ) ;
-        }
+                services.AddSingleton<MainWindow>((services) => new MainWindow()
+                {
+                    DataContext = services.GetRequiredService<MainViewModel>()
+                }) ;
+            })
+            .Build();
     }
 
+
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        _host.Start();
+
+        MembersDbContextFactory membersDbContextFactory = _host.Services.GetRequiredService<MembersDbContextFactory>();
+        using (MembersDbContext context = membersDbContextFactory.Create())
+        {
+            context.Database.Migrate();
+        }
+
+
+        MainWindow = _host.Services.GetRequiredService<MainWindow>();
+        MainWindow.Show();
+        base.OnStartup(e);
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        _host.StopAsync();
+        _host.Dispose();
+        base.OnExit(e);
+    }
+
+    private MemberManagerViewModel CreateMemberManagerViewModel(IServiceProvider services)
+    {
+        return MemberManagerViewModel.LoadViewModel(
+            services.GetRequiredService<MemberStore>(),
+            services.GetRequiredService<SelectedMemberStore>(),
+            services.GetRequiredService<ModalNavigationStore>()
+            ) ;
+    }
 }
