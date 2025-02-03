@@ -27,7 +27,7 @@
                     </Grid.Style>
                     <TextBlock 
                         Grid.Row="0" 
-                        Text="Please select a member to se their details." 
+                        Text="Please select a member to see the details." 
                         TextWrapping="WrapWithOverflow"/>
                     
                 </Grid>
