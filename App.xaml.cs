@@ -6,6 +6,7 @@ using MemberManager.EntityFramework.Queries;
 using MemberManager.Stores;
 using MemberManager.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
@@ -23,7 +24,7 @@ namespace MemberManager
             _host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    string connectionString = "Data Source=Members.db";
+                    string connectionString = context.Configuration.GetConnectionString("sqlite");
 
                     services.AddSingleton<DbContextOptions>(new DbContextOptionsBuilder().UseSqlite(connectionString).Options);
                     services.AddSingleton<MembersDbContextFactory>();
