@@ -25,7 +25,7 @@
             <custom:Modal Panel.ZIndex="1" IsOpen="{Binding IsModalOpen}">
                 <ContentControl Margin="50 5" Content="{Binding CurrentModalViewModel}"/>
             </custom:Modal>
-            <view:MemberManagerView Margin="25 " DataContext="{Binding MemberManagerViewModel}"/>
+            <view:MemberManagerView MaxWidth="1000" Margin="25 " DataContext="{Binding MemberManagerViewModel}"/>
         </Grid>
     </ScrollViewer>
 

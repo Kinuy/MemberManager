@@ -41,7 +41,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="Age" FontWeight="Bold"/>
-                <TextBox Grid.Column="1" Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" Margin="20 0 0 0"/>
+                <TextBox Grid.Column="1" Width="50" Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" Margin="20 0 0 0"/>
             </Grid>
         </Grid>
 

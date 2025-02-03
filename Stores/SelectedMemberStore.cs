@@ -16,6 +16,12 @@ public class SelectedMemberStore
         _memberStore = memberStore;
 
         _memberStore.MemberUpdated += MemberStore_MemberUpdated;
+        _memberStore.MemberAdded += MemberStore_MemberAdded;
+    }
+
+    private void MemberStore_MemberAdded(Member member)
+    {
+        SelectedMember = member;
     }
 
     private void MemberStore_MemberUpdated(Member member)

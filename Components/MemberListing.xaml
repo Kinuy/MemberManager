@@ -23,6 +23,8 @@
                 Background="White"
                 CornerRadius="5"/>
                 <ListView 
+                    SelectionMode="Single"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     BorderThickness="0" 
                     SelectedItem ="{Binding SelectedMemberListingItemViewModel}" 
                     ItemsSource="{Binding MemberListingItemViewModels}">

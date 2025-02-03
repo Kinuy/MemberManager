@@ -20,20 +20,18 @@ public class MemberListingViewModel :ViewModelBase
 
     public IEnumerable<MemberListingItemViewModel> MemberListingItemViewModels => _memberListingItemViewModels;
 
-    private MemberListingItemViewModel _selectedMemberListingItemViewModel;
 
     public MemberListingItemViewModel SelectedMemberListingItemViewModel
     {
         get
         {
-            return _selectedMemberListingItemViewModel;
+            return _memberListingItemViewModels.FirstOrDefault(x=>x.Member?.Id == _selectedMemberStore.SelectedMember?.Id);
         }
         set
         {
-            _selectedMemberListingItemViewModel = value;
-            OnPropertyChanged(nameof(SelectedMemberListingItemViewModel));
+            _selectedMemberStore.SelectedMember = value?.Member;
+            
 
-            _selectedMemberStore.SelectedMember = _selectedMemberListingItemViewModel.Member;
         }
     }
 
@@ -45,11 +43,25 @@ public class MemberListingViewModel :ViewModelBase
         _selectedMemberStore = selectedMemberStore;
         _memberListingItemViewModels = new ObservableCollection<MemberListingItemViewModel>();
 
+        _selectedMemberStore.SelectedMemberChanged += SelectedMemberStore_SelectedMemberChanged;
+
         _memberStore.MemberAdded += MemberStore_MemberAdded;
         _memberStore.MemberUpdated += MemberStore_MemberUpdated;
         _memberStore.MembersLoaded += MemberStore_MembersLoaded;
         _memberStore.MemberDeleted += MemberStore_MemberDeleted;
 
+        _memberListingItemViewModels.CollectionChanged += MemberListingItemViewModels_CollectionChanged; 
+
+    }
+
+    private void MemberListingItemViewModels_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(SelectedMemberListingItemViewModel));
+    }
+
+    private void SelectedMemberStore_SelectedMemberChanged()
+    {
+        OnPropertyChanged(nameof(SelectedMemberListingItemViewModel));
     }
 
     private void MemberStore_MemberDeleted(Guid id)
@@ -86,6 +98,8 @@ public class MemberListingViewModel :ViewModelBase
 
     protected override void Dispose()
     {
+
+        _selectedMemberStore.SelectedMemberChanged -= SelectedMemberStore_SelectedMemberChanged;
         _memberStore.MemberAdded -= MemberStore_MemberAdded;
         _memberStore.MemberUpdated -= MemberStore_MemberUpdated;
         _memberStore.MembersLoaded -= MemberStore_MembersLoaded;
