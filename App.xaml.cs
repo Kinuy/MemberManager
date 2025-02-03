@@ -6,6 +6,7 @@ using MemberManager.EntityFramework.Queries;
 using MemberManager.Stores;
 using MemberManager.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Data;
@@ -15,66 +16,71 @@ namespace MemberManager
 {
     public partial class App : Application
     {
-        private readonly MembersDbContextFactory _membersDbContextFactory;
-        private readonly SelectedMemberStore _selectedMemberStore;
-        private readonly ModalNavigationStore _modalNavigationStore;
-        private readonly MemberStore _memberStore;
-        private readonly ICreateMemberCommand _createMemberCommand;
-        private readonly IUpdateMemberCommand _updateMemberCommand;
-        private readonly IDeleteMemberCommand _deleteMemberCommand;
-        private readonly IGetAllMembersQuery _getAllMembersQuery;
 
         private readonly IHost _host;
         public App()
         {
-            //_host = Host.CreateDefaultBuilder()
-            //    .ConfigureServices((context, services)=>
-            //    {
-            //        services
-            //    })
-            //    .Build();
+            _host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    string connectionString = "Data Source=Members.db";
 
-            string connectionString = "Data Source=Members.db";
+                    services.AddSingleton<DbContextOptions>(new DbContextOptionsBuilder().UseSqlite(connectionString).Options);
+                    services.AddSingleton<MembersDbContextFactory>();
 
-            _membersDbContextFactory = new MembersDbContextFactory(
-                new DbContextOptionsBuilder().UseSqlite(connectionString).Options);
-                
-            _getAllMembersQuery = new GetAllMembersQuery(_membersDbContextFactory);
-            _createMemberCommand = new CreateMemberCommand(_membersDbContextFactory);
-            _updateMemberCommand = new UpdateMemberCommand(_membersDbContextFactory);
-            _deleteMemberCommand = new DeleteMemberCommand(_membersDbContextFactory);
-            _memberStore = new MemberStore(_createMemberCommand, 
-                _updateMemberCommand, 
-                _deleteMemberCommand, 
-                _getAllMembersQuery);
-            _modalNavigationStore = new ModalNavigationStore();
-            _selectedMemberStore = new SelectedMemberStore(_memberStore);
-            
+                    services.AddSingleton<IGetAllMembersQuery, GetAllMembersQuery>();
+                    services.AddSingleton<ICreateMemberCommand, CreateMemberCommand>();
+                    services.AddSingleton<IUpdateMemberCommand, UpdateMemberCommand>();
+                    services.AddSingleton<IDeleteMemberCommand, DeleteMemberCommand>();
+
+                    services.AddSingleton<ModalNavigationStore>();
+                    services.AddSingleton<MemberStore>();
+                    services.AddSingleton<SelectedMemberStore>();
+
+                    services.AddTransient<MemberManagerViewModel>(CreateMemberManagerViewModel);
+                    services.AddSingleton<MainViewModel>();
+
+                    services.AddSingleton<MainWindow>((services) => new MainWindow()
+                    {
+                        DataContext = services.GetRequiredService<MainViewModel>()
+                    }) ;
+                })
+                .Build();
         }
+
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            //_host.Start();
+            _host.Start();
 
-            using (MembersDbContext context = _membersDbContextFactory.Create())
+            MembersDbContextFactory membersDbContextFactory = _host.Services.GetRequiredService<MembersDbContextFactory>();
+            using (MembersDbContext context = membersDbContextFactory.Create())
             {
                 context.Database.Migrate();
             }
 
-                MemberManagerViewModel memberManagerViewModel = MemberManagerViewModel.LoadViewModel(_memberStore, _selectedMemberStore, _modalNavigationStore);
-            MainWindow = new MainWindow()
-            {
-                DataContext = new MainViewModel(_modalNavigationStore, memberManagerViewModel)
-            };
+
+            MainWindow = _host.Services.GetRequiredService<MainWindow>();
             MainWindow.Show();
             base.OnStartup(e);
         }
 
-        //protected override void OnExit(ExitEventArgs e)
-        //{
-        //    _host.StopAsync();
-        //    _host.Dispose();
-        //    base.OnExit(e);
-        //}
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _host.StopAsync();
+            _host.Dispose();
+            base.OnExit(e);
+        }
+
+        private MemberManagerViewModel CreateMemberManagerViewModel(IServiceProvider services)
+        {
+            return MemberManagerViewModel.LoadViewModel(
+                services.GetRequiredService<MemberStore>(),
+                services.GetRequiredService<SelectedMemberStore>(),
+                services.GetRequiredService<ModalNavigationStore>()
+                ) ;
+        }
     }
 
 }
