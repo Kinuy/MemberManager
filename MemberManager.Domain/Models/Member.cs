@@ -20,5 +20,10 @@ public class Member
 
     public string Age { get;}
 
+    public override string ToString()
+    {
+        return $"{Username}_{Age}";
+    }
+
 
 }
